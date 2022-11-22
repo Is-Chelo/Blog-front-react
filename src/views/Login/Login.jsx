@@ -7,7 +7,7 @@ const Login = () => {
     // const signUpButton = document.getElementById("signUp");
     // const signInButton = document.getElementById("signIn");
     // const container = document.getElementById("container-login");
-    const [classPanel, setClassPanel] = useState('container-login')
+    const [classPanel, setClassPanel] = useState("container-login");
     // signUpButton.addEventListener("click", () => {
     //     container.classList.add("right-panel-active");
     // });
@@ -16,73 +16,137 @@ const Login = () => {
     //     container.classList.remove("right-panel-active");
     // });
 
-    const addClass = ()=>{
-        setClassPanel("container-login right-panel-active")
-    }
-    const removeClass = ()=>{
-        setClassPanel("container-login")
-    }
-
+    const addClass = () => {
+        setClassPanel("container-login right-panel-active");
+    };
+    const removeClass = () => {
+        setClassPanel("container-login");
+    };
 
     const [dataLogin, setDataLogin] = useState([]);
     let navigate = useNavigate();
-    const onChange = (e)=>{
-        e.preventDefault()
+    const onChange = (e) => {
+        e.preventDefault();
         setDataLogin({
             ...dataLogin,
             [e.target.name]: e.target.value,
         });
-    }
-    const onSubmit = async (e)=>{
-        e.preventDefault()
+    };
+    const onSubmit = async (e) => {
+        e.preventDefault();
 
-        if(dataLogin.length === 0 || dataLogin.identifier==="" || dataLogin.password ===""){
+        if (
+            dataLogin.length === 0 ||
+            dataLogin.identifier === "" ||
+            dataLogin.password === ""
+        ) {
             Swal.fire({
-                icon: 'error',
-                title: '',
-                text: 'Por favor Llene los campos!',
-              })
-        }else{
-                     
+                icon: "error",
+                title: "",
+                text: "Por favor Llene los campos!",
+            });
+        } else {
             const settings = {
-                method: 'POST',
-                body:JSON.stringify(dataLogin),
+                method: "POST",
+                body: JSON.stringify(dataLogin),
                 headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                }
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
             };
             try {
-                const fetchResponse = await fetch(`https://blog-strapi-production.up.railway.app/api/auth/local`, settings);
+                const fetchResponse = await fetch(
+                    `https://blog-strapi-production.up.railway.app/api/auth/local`,
+                    settings
+                );
                 const data = await fetchResponse.json();
-                
-                console.log(data)
-                if(data?.error?.status === 400){
+
+                console.log(data);
+                if (data?.error?.status === 400) {
                     Swal.fire({
-                        icon: 'error',
-                        title: '',
-                        text: 'Datos incorrectos!',
-                      }) 
-                      return 
-                }else{
-                    localStorage.setItem('token', data.jwt)
-                    localStorage.setItem('user', JSON.stringify(data.user))
+                        icon: "error",
+                        title: "",
+                        text: "Datos incorrectos!",
+                    });
+                    return;
+                } else {
+                    localStorage.setItem("token", data.jwt);
+                    localStorage.setItem("user", JSON.stringify(data.user));
                     return navigate("/");
                 }
             } catch (e) {
-                console.log(e)
-                return e
-            } 
+                console.log(e);
+                return e;
+            }
         }
-    }
+    };
+
+    const onRegistro = async (e) => {
+        e.preventDefault();
+        console.log("as")
+        if (
+            dataLogin.length === 0 ||
+            dataLogin.username === "" ||
+            dataLogin.email === "" ||
+            dataLogin.password === ""
+        ) {
+            Swal.fire({
+                icon: "error",
+                title: "",
+                text: "Por favor Llene los campos!",
+            });
+        } else {
+            const settings = {
+                method: "POST",
+                body: JSON.stringify({...dataLogin, role:2}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            
+            try {
+                const fetchResponse = await fetch(
+                    `https://blog-strapi-production.up.railway.app/api/users`,
+                    settings
+                );
+                const data = await fetchResponse.json();
+                    console.log(data)
+                if (fetchResponse.status!==201) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "",
+                        text: `Error al crear una cuenta ya existe una cuenta con estos datos y la contraseña debe ser mayor a 6 .`,
+                    });
+                    return;
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Registro completo",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    window.location.reload()
+                    return navigate("/login");
+                }
+            } catch (e) {
+                console.log(e);
+                return e;
+            }
+        }
+    };
     return (
         <>
             {/* <Header /> */}
             <div className="container d-flex justify-content-center">
                 <div className={classPanel} id="container">
                     <div className="form-container sign-up-container">
-                        <form action="#">
-                            <h1 className="titulo-h1">Create Account</h1>
+                        <form
+                            action="#"
+                            onSubmit={onRegistro}
+                            onChange={onChange}
+                        >
+                            <h1 className="titulo-h1">Crear Cuenta</h1>
                             <div className="social-container">
                                 <a href="#" className="social">
                                     <i className="fab fa-facebook-f"></i>
@@ -95,15 +159,27 @@ const Login = () => {
                                 </a>
                             </div>
                             <span>usa tu email para registrarte</span>
-                            <input type="text" placeholder="Name" />
-                            <input type="email" placeholder="Email" />
-                            <input type="password" placeholder="Password" />
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Name"
+                            />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                            />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                            />
                             <button>Registrarme</button>
                         </form>
                     </div>
                     <div className="form-container sign-in-container">
                         <form onSubmit={onSubmit} onChange={onChange}>
-                            <h1 className="titulo-h1" >Login</h1>
+                            <h1 className="titulo-h1">Login</h1>
                             <div className="social-container">
                                 <a href="#" className="social">
                                     <i className="fab fa-facebook-f"></i>
@@ -116,11 +192,23 @@ const Login = () => {
                                 </a>
                             </div>
                             <span>usa una cuenta existente</span>
-                            <input type="email" name="identifier" placeholder="Email" />
-                            <input type="password" name="password" placeholder="Password" />
+                            <input
+                                type="email"
+                                name="identifier"
+                                placeholder="Email"
+                            />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                            />
                             {/* <a href="#">Forgot your password?</a> */}
-                            <button className="mt-3
-                            ">Entrar</button>
+                            <button
+                                className="mt-3
+                            "
+                            >
+                                Entrar
+                            </button>
                         </form>
                     </div>
                     <div className="overlay-container">
@@ -128,9 +216,14 @@ const Login = () => {
                             <div className="overlay-panel overlay-left">
                                 <h1 className="titulo-h1">Bienvenido!</h1>
                                 <p>
-                                    Deseas crear tu primer post, por favor inicia sesion
+                                    Deseas crear tu primer post, por favor
+                                    inicia sesion
                                 </p>
-                                <button className="ghost" id="signIn" onClick={removeClass}>
+                                <button
+                                    className="ghost"
+                                    id="signIn"
+                                    onClick={removeClass}
+                                >
                                     Login
                                 </button>
                             </div>
@@ -140,7 +233,11 @@ const Login = () => {
                                     Introduce tu datos personales para empezar
                                     con los posts
                                 </p>
-                                <button className="ghost" id="signUp" onClick={addClass}>
+                                <button
+                                    className="ghost"
+                                    id="signUp"
+                                    onClick={addClass}
+                                >
                                     Registrarse
                                 </button>
                             </div>

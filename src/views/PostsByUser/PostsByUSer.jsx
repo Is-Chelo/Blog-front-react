@@ -30,7 +30,8 @@ const PostsByUSer = () => {
         <>
         <Header/>
         <Banner/>
-            <div className="container mt-5">
+            {console.log(dataPost[0]===null)}
+            {dataPost[0]!==null?<div className="container mt-5">
                 <div className="row mb-2 mt-4">
                     {dataPost.map((dato, i) => {
                         const {
@@ -55,7 +56,9 @@ const PostsByUSer = () => {
                         );
                     })}
                 </div>
-            </div>
+            </div> : <div className="container text-center mt-5">
+                <h2>No existen publicaciones... </h2>
+            </div> }
         </>
     );
 };

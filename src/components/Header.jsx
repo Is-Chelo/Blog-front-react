@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 const Header = () => {
     const [logueado, setLogueado] = useState(false);
@@ -15,7 +15,7 @@ const Header = () => {
     const logout = (e) => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
-        location.reload("/");
+        window.location.href = "/"
     };
 
     useEffect(() => {
