@@ -1,0 +1,20 @@
+.boton-categoria {
+    background-color: rgb(243, 243, 243);
+    margin-right: 15px;
+}
+
+.boton-hover {
+    background-color: rgb(6, 170, 175);
+}
+
+.imagen-post {
+    height: 224px;
+}
+
+.header {
+    position: "fixed";
+    z-index: "10";
+    top: "-10px";
+    width: "110%";
+    background-color: "rgb(0 0 0 / 13%)";
+}
