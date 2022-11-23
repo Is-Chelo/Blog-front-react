@@ -26,6 +26,7 @@ const PostTheLikest = ({
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Si,Eliminar !",
             }).then(async (result) => {
+                console.log(id)
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                       const respuesta = await fetch(`https://blog-strapi-production.up.railway.app/api/posts/${id}`,{

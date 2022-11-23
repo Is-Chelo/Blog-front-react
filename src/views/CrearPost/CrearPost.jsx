@@ -34,7 +34,7 @@ const CrearPost = () => {
         e.preventDefault();
         try {
             valueForm.contenido = value;
-            valueForm.users = user.id;
+            valueForm.user = user.id;
 
             if (
                 valueForm.titulo === undefined ||
@@ -49,7 +49,7 @@ const CrearPost = () => {
                 });
                 return;
             }
-            console.log(valueForm)
+            console.log(JSON.stringify(valueForm, null, 4))
             const fetchResponse = await fetch(
                 `https://blog-strapi-production.up.railway.app/api/posts`,
                 {
