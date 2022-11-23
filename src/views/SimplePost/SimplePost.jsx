@@ -16,7 +16,7 @@ export const SimplePost = () => {
 
     const getPostById = async () => {
         const response = await fetch(
-            ` https://blog-strapi-production.up.railway.app/api/posts/${id}?populate=*`
+            ` https://blog-strapi-production.up.railway.app/api/posts/${id}`
         );
         const { data } = await response.json();
         console.log(data);
@@ -29,7 +29,7 @@ export const SimplePost = () => {
 
     return (
         <>
-        
+            {console.log(dataPost)}
             <Header />
             {dataPost ? (
                 <>
